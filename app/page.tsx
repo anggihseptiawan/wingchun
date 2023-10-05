@@ -20,6 +20,15 @@ export default function Home() {
       .then((data) => setMovies(data.data))
   }, [])
 
+  const searchMovie = (value: string) => {
+    if (value.length < 3) return
+
+    const filteredMovies = movies.filter((movie) => {
+      return movie.Title.toLowerCase().includes(value.toLowerCase())
+    })
+    setMovies(filteredMovies)
+  }
+
   return (
     <main className="min-h-screen">
       <div className="flex justify-end">
@@ -28,10 +37,13 @@ export default function Home() {
             type="text"
             className="border border-slate-800 rounded-md px-4"
             placeholder="search movie"
+            onChange={(e) => searchMovie(e.target.value)}
           />
-          <button className="w-full bg-slate-800 text-center px-6 py-2 rounded-md text-white">
-            Login
-          </button>
+          <Link href="/login">
+            <button className="w-full bg-slate-800 text-center px-6 py-2 rounded-md text-white">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
       <div className="mb-3">

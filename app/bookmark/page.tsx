@@ -18,7 +18,9 @@ export default function Page() {
 
   useEffect(() => {
     const bookmark = localStorage.getItem("bookmark")
-    if (bookmark) setBookmarks(JSON.parse(bookmark!))
+    if (bookmark) {
+      setBookmarks(JSON.parse(bookmark!))
+    }
   }, [])
 
   return (

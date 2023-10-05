@@ -6,10 +6,12 @@ export const Button = ({
   children,
   variant = "PRIMARY",
   className,
+  type = "button",
 }: {
   children: React.ReactNode
   variant?: Variant
   className?: string
+  type?: "button" | "submit"
 }) => {
   if (variant === "PRIMARY")
     return (
@@ -23,6 +25,7 @@ export const Button = ({
     )
   return (
     <button
+      type={type}
       className={`${
         className && className
       } font-semibold px-6 border-2 border-slate-800 py-2 rounded-md`}

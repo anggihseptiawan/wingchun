@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { Toaster, toast } from "react-hot-toast"
 
 export interface MovieDetail {
   Title: string
@@ -49,6 +50,7 @@ export default function Page({ params }: { params: { id: string } }) {
     } else {
       localStorage.setItem("bookmark", JSON.stringify([data]))
     }
+    toast.success("Added to bookmark")
   }
 
   return (
@@ -106,6 +108,7 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }
