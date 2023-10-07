@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "../components/Button"
+import { Button } from "../../components/Button"
 import { useState } from "react"
 import { Toaster, toast } from "react-hot-toast"
 import { UserData } from "../register/page"
@@ -26,6 +26,7 @@ export default function Page() {
           user.password === formData.password
       )
       if (filtered.length > 0) {
+        toast.success("Login succeed")
         redirect("/")
       } else {
         toast.error("User not found!")

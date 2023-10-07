@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Toaster, toast } from "react-hot-toast"
 
 export interface UserData {
   firstName: string
@@ -30,6 +31,8 @@ export default function Page() {
     } else {
       localStorage.setItem("users", JSON.stringify([formData]))
     }
+
+    toast.success("New User added")
   }
 
   return (
@@ -93,6 +96,8 @@ export default function Page() {
           Register
         </button>
       </form>
+
+      <Toaster />
     </div>
   )
 }

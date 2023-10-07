@@ -51,8 +51,8 @@ export default function Home() {
         <div className="flex gap-2 w-full overflow-x-auto">
           {movies
             .filter((_, index) => index < 20)
-            .map((movie) => (
-              <div key={movie.imdbID} className="w-[150px] flex-shrink-0">
+            .map((movie, idx) => (
+              <div key={idx} className="w-[150px] flex-shrink-0">
                 <img className="mb-2" src={movie.Poster} alt={movie.Title} />
                 <Link href={`/movie/${movie.imdbID}`}>
                   <span className="font-semibold">{movie.Title}</span>
@@ -67,8 +67,8 @@ export default function Home() {
         <div className="flex gap-2 w-full overflow-x-auto">
           {movies
             .filter((_, index) => index > 19 && index < 40)
-            .map((movie) => (
-              <div key={movie.imdbID} className="w-[150px] flex-shrink-0">
+            .map((movie, idx) => (
+              <div key={idx} className="w-[150px] flex-shrink-0">
                 <img className="mb-2" src={movie.Poster} alt={movie.Title} />
                 <Link href={`/movie/${movie.imdbID}`}>
                   <span className="font-semibold">{movie.Title}</span>
@@ -83,8 +83,8 @@ export default function Home() {
         <div className="flex gap-2 w-full overflow-x-auto">
           {movies
             .filter((_, index) => index > 39 && index < 60)
-            .map((movie) => (
-              <div key={movie.imdbID} className="w-[150px] flex-shrink-0">
+            .map((movie, idx) => (
+              <div key={idx} className="w-[150px] flex-shrink-0">
                 <img className="mb-2" src={movie.Poster} alt={movie.Title} />
                 <Link href={`/movie/${movie.imdbID}`}>
                   <span className="font-semibold">{movie.Title}</span>
