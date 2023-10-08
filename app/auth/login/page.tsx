@@ -2,10 +2,9 @@
 
 import Link from "next/link"
 import { Button } from "../../components/Button"
-import { useState } from "react"
 import { Toaster, toast } from "react-hot-toast"
 import { UserData } from "../register/page"
-import { redirect } from "next/navigation"
+import { useState } from "react"
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -13,9 +12,8 @@ export default function Page() {
     password: "",
   })
 
-  const login = (e: React.FormEvent) => {
+  const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const storage = localStorage.getItem("users")
 
     if (storage) {
@@ -25,9 +23,14 @@ export default function Page() {
           user.userName === formData.userName &&
           user.password === formData.password
       )
-      if (filtered.length > 0) {
-        toast.success("Login succeed")
-        redirect("/")
+      if (filtered.length) {
+        fetch("/api/auth/login")
+          .then((res) => res.json())
+          .then((data) => {
+            if (data) {
+              window.location.href = "/"
+            }
+          })
       } else {
         toast.error("User not found!")
       }
@@ -63,11 +66,11 @@ export default function Page() {
             }
           />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" variant="PRIMARY" className="w-full">
           Login
         </Button>
-        <Link href="/register" className="w-full">
-          <Button variant="SECONDARY" className="w-full">
+        <Link href="/auth/register" className="w-full">
+          <Button type="button" variant="SECONDARY" className="w-full">
             Register
           </Button>
         </Link>

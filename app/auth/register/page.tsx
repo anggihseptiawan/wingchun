@@ -33,6 +33,7 @@ export default function Page() {
     }
 
     toast.success("New User added")
+    window.location.href = "/auth/login"
   }
 
   return (

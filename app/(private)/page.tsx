@@ -13,20 +13,22 @@ export interface Movie {
 
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([])
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([])
 
   useEffect(() => {
     fetch("/api")
       .then((res) => res.json())
-      .then((data) => setMovies(data.data))
+      .then((data) => {
+        setMovies(data.data)
+        setFilteredMovies(data.data)
+      })
   }, [])
 
   const searchMovie = (value: string) => {
-    if (value.length < 3) return
-
-    const filteredMovies = movies.filter((movie) => {
-      return movie.Title.toLowerCase().includes(value.toLowerCase())
-    })
-    setMovies(filteredMovies)
+    const filtered = movies.filter((movie) =>
+      movie.Title.toLowerCase().includes(value.toLowerCase())
+    )
+    setFilteredMovies(filtered)
   }
 
   return (
@@ -39,7 +41,7 @@ export default function Home() {
             placeholder="search movie"
             onChange={(e) => searchMovie(e.target.value)}
           />
-          <Link href="/login">
+          <Link href="/auth/login">
             <button className="w-full bg-slate-800 text-center px-6 py-2 rounded-md text-white">
               Login
             </button>
@@ -49,7 +51,7 @@ export default function Home() {
       <div className="mb-3">
         <h3 className="text-2xl font-bold mb-3">Top movie (1-20)</h3>
         <div className="flex gap-2 w-full overflow-x-auto">
-          {movies
+          {filteredMovies
             .filter((_, index) => index < 20)
             .map((movie, idx) => (
               <div key={idx} className="w-[150px] flex-shrink-0">
@@ -65,7 +67,7 @@ export default function Home() {
       <div className="mb-3">
         <h3 className="text-2xl font-bold mb-3">Top movie (21-40)</h3>
         <div className="flex gap-2 w-full overflow-x-auto">
-          {movies
+          {filteredMovies
             .filter((_, index) => index > 19 && index < 40)
             .map((movie, idx) => (
               <div key={idx} className="w-[150px] flex-shrink-0">
@@ -81,7 +83,7 @@ export default function Home() {
       <div className="mb-3">
         <h3 className="text-2xl font-bold mb-3">Top movie (41-60)</h3>
         <div className="flex gap-2 w-full overflow-x-auto">
-          {movies
+          {filteredMovies
             .filter((_, index) => index > 39 && index < 60)
             .map((movie, idx) => (
               <div key={idx} className="w-[150px] flex-shrink-0">
