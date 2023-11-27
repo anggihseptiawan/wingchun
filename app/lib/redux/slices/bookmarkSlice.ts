@@ -40,8 +40,19 @@ const bookmarkSlice = createSlice({
         state.value = [action.payload]
       }
     },
-    remove: (state) => {
-      // state.value = String(Math.max(Number(state.value) - 1, 0))
+    remove: (state, action: PayloadAction<string>) => {
+      if (state.value) {
+        const indexItem = state.value.findIndex(
+          (item) => item.id === action.payload
+        )
+
+        if (indexItem >= 0) {
+          const updatedState = [...state.value]
+          updatedState.splice(indexItem, 1)
+          state.value = updatedState
+          toast.success("Remove succeed!")
+        }
+      }
     },
   },
 })

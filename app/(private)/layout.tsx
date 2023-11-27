@@ -1,8 +1,5 @@
-"use client"
-
 import Link from "next/link"
 import React from "react"
-import { Text } from "../components/Text"
 
 export default function PrivatePageLayout({
   children,
