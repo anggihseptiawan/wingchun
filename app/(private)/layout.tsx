@@ -2,9 +2,6 @@
 
 import Link from "next/link"
 import React from "react"
-import { Counter } from "../components/Counter"
-import { useSelector } from "react-redux"
-import { selectTheme } from "../lib/redux/slices/theme/selector"
 import { Text } from "../components/Text"
 
 export default function PrivatePageLayout({
@@ -12,8 +9,6 @@ export default function PrivatePageLayout({
 }: {
   children: React.ReactNode
 }) {
-  const theme = useSelector(selectTheme)
-
   return (
     <>
       <nav className="flex justify-between">
@@ -31,10 +26,6 @@ export default function PrivatePageLayout({
             Contact
           </Link>
         </div>
-        <p>Theme: {theme}</p>
-        <Counter>
-          <Text />
-        </Counter>
       </nav>
       <main className="py-8">{children}</main>
     </>

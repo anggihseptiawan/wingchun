@@ -1,6 +1,8 @@
 "use client"
 
+import { selectBookmark } from "@lib/redux/slices/bookmarkSlice"
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
 interface BookmarkedMovie {
   title: string
@@ -15,11 +17,11 @@ interface BookmarkedMovie {
 
 export default function Page() {
   const [bookmarks, setBookmarks] = useState<BookmarkedMovie[] | null>(null)
+  const bookmark = useSelector(selectBookmark)
 
   useEffect(() => {
-    const bookmark = localStorage.getItem("bookmark")
     if (bookmark) {
-      setBookmarks(JSON.parse(bookmark!))
+      setBookmarks(bookmark)
     }
   }, [])
 

@@ -1,7 +1,9 @@
 "use client"
 
+import { add } from "@/app/lib/redux/slices/bookmarkSlice"
 import { useEffect, useState } from "react"
-import { Toaster, toast } from "react-hot-toast"
+import { Toaster } from "react-hot-toast"
+import { useDispatch } from "react-redux"
 
 export interface MovieDetail {
   Title: string
@@ -20,6 +22,7 @@ export interface MovieDetail {
 
 export default function Page({ params }: { params: { id: string } }) {
   const [movieDetail, setMovieDetail] = useState<MovieDetail | null>(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     fetch(`/api/movie`, {
@@ -35,6 +38,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const addToBookmark = () => {
     const data = {
+      id: params.id,
       title: movieDetail.Title,
       year: movieDetail.Year,
       plot: movieDetail.Plot,
@@ -42,15 +46,7 @@ export default function Page({ params }: { params: { id: string } }) {
       poster: movieDetail.Poster,
     }
 
-    const storage = localStorage.getItem("bookmark")
-
-    if (storage) {
-      const bookmark = JSON.parse(storage)
-      localStorage.setItem("bookmark", JSON.stringify([...bookmark, data]))
-    } else {
-      localStorage.setItem("bookmark", JSON.stringify([data]))
-    }
-    toast.success("Added to bookmark")
+    dispatch(add(data))
   }
 
   return (
