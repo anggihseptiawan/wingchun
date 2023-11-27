@@ -2,6 +2,9 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { decrement, increment } from "@lib/redux/slices/counter"
+import { makeItDark, makeItLight, reset } from "@lib/redux/slices/theme"
 
 export interface Movie {
   Title: string
@@ -31,6 +34,8 @@ export default function Home() {
     setFilteredMovies(filtered)
   }
 
+  const dispatch = useDispatch()
+
   return (
     <main className="min-h-screen">
       <div className="flex justify-end">
@@ -49,6 +54,20 @@ export default function Home() {
         </div>
       </div>
       <div className="mb-3">
+        <div className="flex items-center">
+          <button className="p-2" onClick={() => dispatch(decrement())}>
+            -
+          </button>
+          <p className="mx-2">Counter</p>
+          <button className="p-1" onClick={() => dispatch(increment())}>
+            +
+          </button>
+        </div>
+        <div className="flex gap-4 my-4">
+          <button onClick={() => dispatch(makeItDark())}>set to dark</button>
+          <button onClick={() => dispatch(makeItLight())}>set to light</button>
+          <button onClick={() => dispatch(reset())}>set to system</button>
+        </div>
         <h3 className="text-2xl font-bold mb-3">Top movie (1-20)</h3>
         <div className="flex gap-2 w-full overflow-x-auto">
           {filteredMovies
