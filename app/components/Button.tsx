@@ -1,9 +1,8 @@
 import React, { ButtonHTMLAttributes } from "react"
 
-interface ButtonProps extends ButtonHTMLAttributes<any> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
   variant?: "PRIMARY" | "SECONDARY"
-  className?: string
 }
 
 export const Button = (props: ButtonProps) => {

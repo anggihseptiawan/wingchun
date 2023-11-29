@@ -1,27 +1,26 @@
 "use client"
 
+import { Button } from "@/app/components/Button"
+import { Bookmark, useBookmarkStore } from "@/lib/zustand/store"
 import { useEffect, useState } from "react"
-
-interface BookmarkedMovie {
-  title: string
-  year: string
-  plot: string
-  ratings: {
-    Source: string
-    Value: string
-  }[]
-  poster: string
-}
+import { Toaster, toast } from "react-hot-toast"
 
 export default function Page() {
-  const [bookmarks, setBookmarks] = useState<BookmarkedMovie[] | null>(null)
+  const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
+  const [bookmarkState, removeBookmark] = useBookmarkStore((state) => [
+    state.bookmark,
+    state.removeBookmark,
+  ])
 
   useEffect(() => {
-    const bookmark = localStorage.getItem("bookmark")
-    if (bookmark) {
-      setBookmarks(JSON.parse(bookmark!))
-    }
-  }, [])
+    setBookmarks(bookmarkState)
+  }, [bookmarkState])
+
+  const removeMovie = (id: string) => {
+    console.log(id)
+    removeBookmark(id)
+    toast.success("Remove succeed!")
+  }
 
   return (
     <div>
@@ -42,12 +41,20 @@ export default function Page() {
                 ))}
               </ul>
               <p>Plot: {bookmark.plot}</p>
+              <Button
+                variant="PRIMARY"
+                className="px-4 mt-4"
+                onClick={() => removeMovie(bookmark.id)}
+              >
+                Remove
+              </Button>
             </div>
           </div>
         ))
       ) : (
         <p>Bookmark empty</p>
       )}
+      <Toaster />
     </div>
   )
 }

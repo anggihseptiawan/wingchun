@@ -1,5 +1,6 @@
 "use client"
 
+import { useBookmarkStore } from "@/lib/zustand/store"
 import { useEffect, useState } from "react"
 import { Toaster, toast } from "react-hot-toast"
 
@@ -20,6 +21,7 @@ export interface MovieDetail {
 
 export default function Page({ params }: { params: { id: string } }) {
   const [movieDetail, setMovieDetail] = useState<MovieDetail | null>(null)
+  const setBookmark = useBookmarkStore((state) => state.setBookmark)
 
   useEffect(() => {
     fetch(`/api/movie`, {
@@ -35,6 +37,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const addToBookmark = () => {
     const data = {
+      id: params.id,
       title: movieDetail.Title,
       year: movieDetail.Year,
       plot: movieDetail.Plot,
@@ -42,14 +45,7 @@ export default function Page({ params }: { params: { id: string } }) {
       poster: movieDetail.Poster,
     }
 
-    const storage = localStorage.getItem("bookmark")
-
-    if (storage) {
-      const bookmark = JSON.parse(storage)
-      localStorage.setItem("bookmark", JSON.stringify([...bookmark, data]))
-    } else {
-      localStorage.setItem("bookmark", JSON.stringify([data]))
-    }
+    setBookmark(data)
     toast.success("Added to bookmark")
   }
 
