@@ -1,20 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { ReduxState } from "../store"
 import { toast } from "react-hot-toast"
+import { MovieDetail } from "@/app/(private)/movie/[id]/page"
 
-interface BookmarkItem {
-  id: string
-  title: string
-  year: string
-  plot: string
-  ratings: {
-    Source: string
-    Value: string
-  }[]
-  poster: string
-}
-
-const initialState: { value: BookmarkItem[] | null } = {
+const initialState: { value: MovieDetail[] | null } = {
   value: null,
 }
 
@@ -22,7 +11,7 @@ const bookmarkSlice = createSlice({
   name: "bookmark",
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<BookmarkItem>) => {
+    add: (state, action: PayloadAction<MovieDetail>) => {
       if (state.value) {
         const index = state.value.findIndex(
           (item) => item.id === action.payload.id
@@ -40,7 +29,7 @@ const bookmarkSlice = createSlice({
         state.value = [action.payload]
       }
     },
-    remove: (state, action: PayloadAction<string>) => {
+    remove: (state, action: PayloadAction<number>) => {
       if (state.value) {
         const indexItem = state.value.findIndex(
           (item) => item.id === action.payload

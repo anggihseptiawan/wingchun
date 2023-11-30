@@ -2,22 +2,20 @@
 
 import { add } from "@/app/lib/redux/slices/bookmarkSlice"
 import { useEffect, useState } from "react"
-import { Toaster } from "react-hot-toast"
+import { Toaster, toast } from "react-hot-toast"
 import { useDispatch } from "react-redux"
 
 export interface MovieDetail {
-  Title: string
-  Year: string
-  Ratings: {
-    Source: string
-    Value: string
+  id: number
+  overview: string
+  genres: {
+    id: string
+    name: string
   }[]
-  Country: string
-  Plot: string
-  Genre: string
-  Writer: string
-  Actors: string
-  Poster: string
+  title: string
+  poster_path: string
+  release_date: string
+  vote_average: number
 }
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -27,7 +25,7 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     fetch(`/api/movie`, {
       headers: {
-        imdbID: params.id,
+        id: params.id,
       },
     })
       .then((res) => res.json())
@@ -38,12 +36,14 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const addToBookmark = () => {
     const data = {
-      id: params.id,
-      title: movieDetail.Title,
-      year: movieDetail.Year,
-      plot: movieDetail.Plot,
-      ratings: movieDetail.Ratings,
-      poster: movieDetail.Poster,
+      id: Number(params.id),
+      title: movieDetail.title,
+      year: movieDetail.release_date,
+      overview: movieDetail.overview,
+      genres: movieDetail.genres,
+      vote_average: movieDetail.vote_average,
+      poster_path: movieDetail.poster_path,
+      release_date: movieDetail.release_date,
     }
 
     dispatch(add(data))
@@ -51,52 +51,47 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <img
-          src={movieDetail.Poster}
-          className="mb-2"
-          alt={movieDetail.Title}
+          src={"https://image.tmdb.org/t/p/w500//" + movieDetail.poster_path}
+          className="w-1/3 rounded-xl"
+          alt={movieDetail.title}
         />
         <div>
           <div className="mb-5">
-            <h1 className="font-bold text-2xl mb-4">{movieDetail.Title}</h1>
-            <p>
-              <span className="font-semibold">Released: </span>{" "}
-              {movieDetail.Year}
-            </p>
-            <p className="font-semibold">Ratings:</p>
-            <ul className="pl-3">
-              {movieDetail.Ratings.map((rating, idx) => (
-                <li className="list-disc list-inside" key={idx}>
-                  {rating.Source}: {rating.Value}
-                </li>
-              ))}
-            </ul>
-            <p>
-              <span className="font-semibold">Country: </span>{" "}
-              {movieDetail.Country}
-            </p>
-            <p>
-              <span className="font-semibold">Plot: </span> {movieDetail.Plot}
-            </p>
-            <p>
-              <span className="font-semibold">Genre: </span> {movieDetail.Genre}
-            </p>
-            <p>
-              <span className="font-semibold">Writer: </span>{" "}
-              {movieDetail.Writer}
-            </p>
-            <p>
-              <span className="font-semibold">Actors: </span>{" "}
-              {movieDetail.Actors}
-            </p>
+            <h1 className="font-bold text-2xl mb-4">{movieDetail.title}</h1>
+            <div className="mb-4">
+              <p>
+                <span className="font-semibold">Released: </span>{" "}
+                {new Date(movieDetail.release_date).toLocaleDateString(
+                  "en-EN",
+                  {
+                    month: "long",
+                    year: "numeric",
+                  }
+                )}
+              </p>
+              <p className="font-semibold">
+                Ratings: {movieDetail.vote_average}
+              </p>
+              <p>
+                <span className="font-semibold">Genre: </span>
+                {movieDetail.genres.map((genre, idx) => (
+                  <span key={idx}>{genre.name},</span>
+                ))}
+              </p>
+            </div>
+            <div className="mb-5">
+              <h3 className="text-xl font-bold mb-2">Overview</h3>
+              <p>{movieDetail.overview}</p>
+            </div>
           </div>
-          <div className="flex gap-1">
-            <button className="font-semibold px-6 bg-slate-800 text-center py-2 rounded-md text-white">
+          <div className="flex gap-2">
+            <button className="font-semibold px-6 border-2 border-indigo-700 text-center py-2 rounded-md text-white">
               Play
             </button>
             <button
-              className="font-semibold px-6 border-2 border-slate-800 py-2 rounded-md"
+              className="font-semibold px-6 bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md"
               onClick={addToBookmark}
             >
               Add Bookmark
